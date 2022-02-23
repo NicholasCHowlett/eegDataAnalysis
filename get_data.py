@@ -1,3 +1,5 @@
+%matplotlib
+
 import argparse
 import time
 import numpy as np
@@ -8,13 +10,16 @@ from brainflow.data_filter import DataFilter
 
 import matplotlib.pyplot as plt
 from datetime import datetime
-from pyedflib import highlevel
+import json
 
 # display development messages
 #BoardShim.enable_dev_board_logger()
 
+# CONSTANTS: modify each recording
+note = "Patient's eyes open, looking at laptop. Device on the floor, 1-metre away from laptop."
+channel_name = 'Fp1'
+
 # setup for my board
-channel_names = ['Fp1']
 Id = BoardIds.GANGLION_BOARD.value
 sfreq = BoardShim.get_sampling_rate(Id)
 params = BrainFlowInputParams()
@@ -32,17 +37,17 @@ dataRaw = board.get_board_data()  # get all data but remove it from internal buf
 board.stop_stream()
 board.release_session()
 
-# write an edf file
-signals = [dataRaw[1]] # Ganglion's EEG channels are [1: 4]
-signal_headers = highlevel.make_signal_headers(
-    channel_names,
-    sample_frequency=sfreq,
-    physical_min=-600.0, # changed to ensure no data clipping occurs
-    physical_max=600.0)
-comments = "Comment."
-header = highlevel.make_header(patientname='Nick Howlett', recording_additional=comments)
-dateTime = datetime.today().strftime("20%y-%m-%d_%H-%M-%S")
-file = 'data-eeg-ganglion_' + dateTime + '.edf'
-highlevel.write_edf(file, signals, signal_headers, header)
+# write a JSON file
+data = dataRaw[1] # Ganglion's EEG channels are [1: 4]
+dateTime = datetime.today().strftime("20%y-%m-%d_%H-%M")
+fileName = 'data-eeg-ganglion_' + dateTime + '.json'
+file = open(fileName, "w")
+dataList = data.tolist()
+JSON = {"note": note, channel_name: dataList}
+json.dump(JSON, file)
+file.close()
 
 print("data saved.")
+
+fig, ax = plt.subplots()
+ax.plot(data)
