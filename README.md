@@ -1,5 +1,7 @@
 # Source repo for eegDataAnalysis
-This software repository contains some code to allow anyone to process an electroencephalography signal (_process_data.ipynb_). To interact with this processing pipeline easily, refer to the [eegDataAnalysis Binder](https://mybinder.org/v2/gh/NicholasCHowlett/eegDataAnalysis/HEAD?labpath=process_data.ipynb). This repo also contains code to acquire this signal from OpenBCI hardware (_get_data.py_).
+This software repository contains some code to allow anyone to process an electroencephalography signal (_process_data.ipynb_). This repo also contains code to acquire this signal from OpenBCI hardware (_get_data.py_).
+
+For an introduction to EEG refer to the [eegDataAnalysis Binder](https://mybinder.org/v2/gh/NicholasCHowlett/eegDataAnalysis/HEAD?labpath=process_data.ipynb). That Binder environment also allows interaction with the data processing pipeline (and modification of that code). 
 
 ## Setup of Python
 Python 3 is used for both acquiring and processing data. Acquiring data is conducted by using Python directly in a Windows environment, while data processing is conducted in a Linux environment (installed via Windows Subsystem for Linux).
